@@ -36,6 +36,7 @@ class Database:
                     raise
             finally:
                 self.close()
+
     def create_tables(self):
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS Members (
