@@ -38,6 +38,7 @@ class Database:
                 self.close()
 
     def create_tables(self):
+        self.connect()
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS Members (
                 member_id INTEGER,
