@@ -8,7 +8,11 @@ class Database:
     def __init__(self, db_name):
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
-
+    
+    def connect(self):
+        self.conn = sqlite3.connect(self.db_path, timeout=30)
+        self.conn.execute('PRAGMA journal_mode=WAL;')
+        self.cursor = self.conn.cursor()
 
     def create_tables(self):
         self.cursor.execute('''
