@@ -12,7 +12,7 @@ class Database:
 
     def connect(self):
         if self.conn is None:
-            self.conn = sqlite3.connect(self.db_path, timeout=30,autocommit=True)
+            self.conn = sqlite3.connect(self.db_path, timeout=30)
             self.conn.execute('PRAGMA journal_mode=WAL;')
             self.cursor = self.conn.cursor()
 
