@@ -1,5 +1,5 @@
 plotly
 streamlit
 datetime
-pysqlite3
+pysqlite3-binary
 pytz
