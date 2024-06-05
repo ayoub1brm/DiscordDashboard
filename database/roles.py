@@ -9,6 +9,9 @@ class RolesDatabase(Database):
             )
         ''')
 
+    def close(self):
+        self.conn.close()
+
     def insert_role(self, role_data):
         self.cursor.execute('''
             INSERT INTO Roles (role_id, role_name)
