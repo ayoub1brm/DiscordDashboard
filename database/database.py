@@ -4,10 +4,6 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import sqlite3
 from datetime import datetime, timedelta
 
-import sqlite3
-import time
-from datetime import datetime, timedelta
-
 class Database:
     def __init__(self, db_path):
         self.db_path = db_path
