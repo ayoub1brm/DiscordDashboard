@@ -10,7 +10,11 @@ from visualizations.role_distribution import role_distribution_chart
 from visualizations.joined_left import joined_and_left_chart
 from visualizations.channel_activity_bar import top_channels_bar_chart
 from visualizations.channel_activity_line import channel_activity_line_chart
-from database.database import Database
+from database.members import MembersDatabase
+from database.channels import ChannelsDatabase
+from database.invites import InvitesDatabase
+from database.roles import RolesDatabase
+from database.messages import MessagesDatabase
 from streamlit_extras.stylable_container import stylable_container
 import altair as alt
 import os
@@ -22,6 +26,7 @@ from database.database import Database
 discord_token = os.getenv('DISCORD_TOKEN')
 
 
+
 def run_discord_bot():
     setup_discord_bot(discord_token)
 
@@ -29,7 +34,11 @@ def run_discord_bot():
 run_discord_bot()
 
 # Initialize database
-db = Database('discord_bot.db')
+members_db= MembersDatabase('members.db'),
+roles_db= RolesDatabase('roles.db'),
+messages_db= MessagesDatabase('messages.db'),
+invites_db= InvitesDatabase('invites.db'),
+channels_db= ChannelsDatabase('channels.db')
 roles = db.get_roles()
 
 # Set up page configuration
