@@ -1,4 +1,4 @@
-from database import Database
+from database.database import Database
 
 class InvitesDatabase(Database):
     def create_tables(self):
