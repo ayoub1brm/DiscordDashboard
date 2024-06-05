@@ -28,14 +28,12 @@ class InvitesDatabase(Database):
         self.execute('DELETE FROM Invites WHERE code = ?', (code,))
 
     def get_invite_uses(self, code):
-        self.connect()
         self.cursor.execute('SELECT uses FROM Invites WHERE code = ?', (code,))
         result = self.cursor.fetchone()
         self.close()
         return result
 
     def get_all_invites(self):
-        self.connect()
         self.cursor.execute('SELECT code, uses FROM Invites')
         result = self.cursor.fetchall()
         self.close()
