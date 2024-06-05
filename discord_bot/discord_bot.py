@@ -20,6 +20,7 @@ class DiscordBot(commands.Bot):
         self.messages_db = dbs['messages']
         self.invites_db = dbs['invites']
         self.channels_db = dbs['channels']
+        self.welcome_messages_db = dbs['welcome_messages']
         self.tz = pytz.timezone('Europe/Paris')
 
     async def on_ready(self):
@@ -32,13 +33,14 @@ class DiscordBot(commands.Bot):
             latest_member_joined_at = self.members_db.get_latest_member_joined_at()
             latest_message_timestamp = self.messages_db.get_latest_message_timestamp()
 
-            for role in guild.roles:
-                role_data = (role.id, role.name)
-                self.roles_db.insert_role(role_data)
-                await asyncio.sleep(30)
+            # Batch insert roles
+            roles_data = [(role.id, role.name) for role in guild.roles]
+            self.roles_db.insert_roles(roles_data)
+
+            # Insert channels
             for channel in guild.channels:
                 self.channels_db.insert_channel(channel.id, channel.name)
-                await asyncio.sleep(30)
+
             # Insert new members and roles
             for member in guild.members:
                 joined_at = member.joined_at.astimezone(self.tz) if member.joined_at else None
@@ -53,7 +55,7 @@ class DiscordBot(commands.Bot):
 
             # Fetch and insert new messages by channel
             for channel in guild.text_channels:
-                async for message in channel.history(limit=10, after=latest_message_timestamp):
+                async for message in channel.history(limit=None, after=latest_message_timestamp):
                     created_at = message.created_at.astimezone(self.tz)
                     message_data = (
                         message.id, message.channel.id, f'{channel.type}', message.author.id,
@@ -62,7 +64,7 @@ class DiscordBot(commands.Bot):
                     self.messages_db.insert_message(message_data)
 
             for channel in guild.voice_channels:
-                async for message in channel.history(limit=10, after=latest_message_timestamp):
+                async for message in channel.history(limit=None, after=latest_message_timestamp):
                     created_at = message.created_at.astimezone(self.tz)
                     message_data = (
                         message.id, message.channel.id, f'{channel.type}', message.author.id,
@@ -73,12 +75,12 @@ class DiscordBot(commands.Bot):
             bienvenue_channel_pattern = re.compile(r"bienvenue", re.IGNORECASE)
             for channel in guild.text_channels:
                 if bienvenue_channel_pattern.search(channel.name):
-                    async for message in channel.history(limit=10, after=latest_message_timestamp):
+                    async for message in channel.history(limit=None, after=latest_message_timestamp):
                         created_at = message.created_at.astimezone(self.tz)
                         welcome_message_data = (
                             message.id, message.mentions[0].id if message.mentions else None, message.content, created_at
                         )
-                        self.messages_db.insert_message(welcome_message_data)
+                        self.welcome_messages_db.insert_welcome_message(welcome_message_data)
 
     async def on_member_join(self, member):
         guild_invites = await member.guild.invites()
@@ -145,7 +147,7 @@ class DiscordBot(commands.Bot):
             welcome_message_data = (
                 message.id, message.author.id, message.content, created_at
             )
-            self.messages_db.insert_message(welcome_message_data)
+            self.welcome_messages_db.insert_welcome_message(welcome_message_data)
 
     async def on_reaction_add(self, reaction, user):
         created_at = datetime.now(self.tz)
@@ -155,10 +157,8 @@ class DiscordBot(commands.Bot):
         self.messages_db.insert_message(reaction_data)
 
     def get_role_id(self, role):
-        self.roles_db.connect()
-        self.roles_db.cursor.execute('SELECT role_id FROM Roles WHERE role_name = ?', (role.name,))
-        result = self.roles_db.cursor.fetchone()
-        self.roles_db.close()
+        cursor = self.roles_db.execute('SELECT role_id FROM Roles WHERE role_name = ?', (role.name,))
+        result = cursor.fetchone()
         return result[0] if result else None
 
     async def update_server_data(self):
@@ -167,14 +167,18 @@ class DiscordBot(commands.Bot):
             await asyncio.sleep(60)
 
 def setup_discord_bot(token):
+    db_path = 'discord_bot.db'
     dbs = {
-        'members': MembersDatabase('members.db'),
-        'roles': RolesDatabase('roles.db'),
-        'messages': MessagesDatabase('messages.db'),
-        'invites': InvitesDatabase('invites.db'),
-        'channels': ChannelsDatabase('channels.db')
+        'members': MembersDatabase(db_path),
+        'roles': RolesDatabase(db_path),
+        'messages': MessagesDatabase(db_path),
+        'invites': InvitesDatabase(db_path),
+        'channels': ChannelsDatabase(db_path),
+        'welcome_messages': WelcomeMessagesDatabase(db_path)
     }
     
+    for db in dbs.values():
+        db.create_tables()
 
     intents = discord.Intents.all()
     bot = DiscordBot(command_prefix='!', intents=intents, dbs=dbs)
