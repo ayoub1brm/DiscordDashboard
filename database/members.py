@@ -2,7 +2,8 @@ from database.database import Database
 
 class MembersDatabase(Database):
     def create_tables(self):
-        self.execute('''
+        self.connect()
+        self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS Members (
                 member_id INTEGER,
                 username TEXT,
@@ -17,13 +18,15 @@ class MembersDatabase(Database):
         ''')
 
     def insert_member(self, member_data):
-        self.execute('''
+        self.connect()
+        self.cursor.execute('''
             INSERT INTO Members (member_id, username, discriminator, join_date, leave_date, is_bot, activity_status, role_id)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', member_data)
 
     def update_member_leave_date(self, member_id, leave_date):
-        self.execute('''
+        self.connect()
+        self.cursor.execute('''
             UPDATE Members SET leave_date = ? WHERE member_id = ?
         ''', (leave_date, member_id))
 
