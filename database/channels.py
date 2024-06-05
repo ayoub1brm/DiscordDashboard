@@ -8,6 +8,9 @@ class ChannelsDatabase(Database):
                 channel_name TEXT
             )
         ''')
+        
+    def close(self):
+        self.conn.close()
 
     def insert_channel(self, channel_id, channel_name):
         self.cursor.execute('''
