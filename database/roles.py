@@ -4,7 +4,7 @@ class RolesDatabase(Database):
     def create_tables(self):
         self.execute('''
             CREATE TABLE IF NOT EXISTS Roles (
-                role_id INTEGER PRIMARY KEY,
+                role_id INTEGER,
                 role_name TEXT
             )
         ''')
