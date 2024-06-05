@@ -13,6 +13,10 @@ from visualizations.channel_activity_line import channel_activity_line_chart
 from database.database import Database
 from streamlit_extras.stylable_container import stylable_container
 import altair as alt
+import os
+import subprocess
+from discord_bot.discord_bot import setup_discord_bot
+from database.database import Database
 
 # Initialize database
 db = Database('discord_bot.db')
