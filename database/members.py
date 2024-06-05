@@ -16,6 +16,9 @@ class MembersDatabase(Database):
             )
         ''')
 
+    def close(self):
+        self.conn.close()
+        
     def insert_member(self, member_data):
         self.cursor.execute('''
             INSERT INTO Members (member_id, username, discriminator, join_date, leave_date, is_bot, activity_status, role_id)
