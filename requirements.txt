@@ -3,4 +3,5 @@ streamlit
 datetime
 pysqlite3-binary
 discord.py
+SQLAlchemy==1.4
 pytz
