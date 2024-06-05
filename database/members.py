@@ -35,9 +35,10 @@ class MembersDatabase(Database):
         self.close()
         return result
 
-    def get_latest_member_joined_at(self):
+   def get_latest_member_joined_at(self):
         cursor = self.execute('SELECT MAX(join_date) FROM Members')
         result = cursor.fetchone()[0]
-        return result
+        if result:
+            return datetime.fromisoformat(result)
+        return None
 
-    # Add other Members specific methods
