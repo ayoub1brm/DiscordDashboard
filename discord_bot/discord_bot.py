@@ -20,7 +20,6 @@ class DiscordBot(commands.Bot):
         self.messages_db = dbs['messages']
         self.invites_db = dbs['invites']
         self.channels_db = dbs['channels']
-        self.welcome_messages_db = dbs['welcome_messages']
         self.tz = pytz.timezone('Europe/Paris')
 
     async def on_ready(self):
