@@ -18,6 +18,16 @@ import subprocess
 from discord_bot.discord_bot import setup_discord_bot
 from database.database import Database
 
+# Get the token from an environment variable
+discord_token = os.getenv('DISCORD_TOKEN')
+
+
+def run_discord_bot():
+    setup_discord_bot(discord_token)
+
+# Run Discord bot
+run_discord_bot()
+
 # Initialize database
 db = Database('discord_bot.db')
 roles = db.get_roles()
