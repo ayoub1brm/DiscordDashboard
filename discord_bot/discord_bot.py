@@ -173,8 +173,6 @@ def setup_discord_bot(token):
         'channels': ChannelsDatabase('channels.db')
     }
     
-    for db in dbs.values():
-        db.create_tables()
 
     intents = discord.Intents.all()
     bot = DiscordBot(command_prefix='!', intents=intents, dbs=dbs)
