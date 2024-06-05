@@ -2,7 +2,7 @@ from database.database import Database
 
 class RolesDatabase(Database):
     def create_tables(self):
-        self.execute('''
+        self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS Roles (
                 role_id INTEGER,
                 role_name TEXT
@@ -10,7 +10,7 @@ class RolesDatabase(Database):
         ''')
 
     def insert_role(self, role_data):
-        self.execute('''
+        self.cursor.execute('''
             INSERT INTO Roles (role_id, role_name)
             VALUES (?, ?)
         ''', role_data)
