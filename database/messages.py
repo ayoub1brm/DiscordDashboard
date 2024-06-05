@@ -22,7 +22,6 @@ class MessagesDatabase(Database):
         ''', message_data)
 
     def get_latest_message_timestamp(self):
-        self.connect()
         self.cursor.execute('SELECT MAX(timestamp) FROM Messages')
         result = self.cursor.fetchone()[0]
         self.close()
