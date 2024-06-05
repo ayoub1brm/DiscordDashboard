@@ -11,6 +11,9 @@ class InvitesDatabase(Database):
             )
         ''')
 
+    def close(self):
+        self.conn.close()
+
     def insert_invite(self, code, uses, inviter_id, created_at):
         self.cursor.execute('''
             INSERT OR REPLACE INTO Invites (code, uses, inviter_id, created_at)
