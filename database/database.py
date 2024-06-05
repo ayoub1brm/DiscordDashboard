@@ -10,9 +10,6 @@ class Database:
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
         self.create_tables()
-
-    def close(self):
-        self.conn.close()
         
     def create_tables(self):
         raise NotImplementedError("Subclasses should implement this!")
