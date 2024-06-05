@@ -2,7 +2,7 @@ from database.database import Database
 
 class InvitesDatabase(Database):
     def create_tables(self):
-        self.cursor.execute('''
+        self.execute('''
             CREATE TABLE IF NOT EXISTS Invites (
                 code TEXT PRIMARY KEY,
                 uses INTEGER,
