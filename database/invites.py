@@ -2,7 +2,7 @@ from database.database import Database
 
 class InvitesDatabase(Database):
     def create_tables(self):
-        self.execute('''
+        self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS Invites (
                 code TEXT PRIMARY KEY,
                 uses INTEGER,
@@ -12,20 +12,20 @@ class InvitesDatabase(Database):
         ''')
 
     def insert_invite(self, code, uses, inviter_id, created_at):
-        self.execute('''
+        self.cursor.execute('''
             INSERT OR REPLACE INTO Invites (code, uses, inviter_id, created_at)
             VALUES (?, ?, ?, ?)
         ''', (code, uses, inviter_id, created_at))
 
     def update_invite_uses(self, code, uses):
-        self.execute('''
+        self.cursor.execute('''
             UPDATE Invites
             SET uses = ?
             WHERE code = ?
         ''', (uses, code))
 
     def delete_invite(self, code):
-        self.execute('DELETE FROM Invites WHERE code = ?', (code,))
+        self.cursor.execute('DELETE FROM Invites WHERE code = ?', (code,))
 
     def get_invite_uses(self, code):
         self.cursor.execute('SELECT uses FROM Invites WHERE code = ?', (code,))
