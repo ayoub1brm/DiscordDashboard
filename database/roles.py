@@ -16,7 +16,6 @@ class RolesDatabase(Database):
         ''', role_data)
 
     def get_role_distribution(self):
-        self.connect()
         self.cursor.execute('''
             SELECT Roles.role_name, COUNT(Members.member_id) 
             FROM Members 
