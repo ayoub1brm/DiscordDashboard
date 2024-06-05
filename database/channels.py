@@ -10,7 +10,7 @@ class ChannelsDatabase(Database):
         ''')
 
     def insert_channel(self, channel_id, channel_name):
-        self.execute('''
+        self.cursor.execute('''
             INSERT OR IGNORE INTO Channels (channel_id, channel_name)
             VALUES (?, ?)
         ''', (channel_id, channel_name))
