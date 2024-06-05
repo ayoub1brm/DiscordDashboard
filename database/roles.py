@@ -11,12 +11,12 @@ class RolesDatabase(Database):
 
     def insert_role(self, role_data):
         self.execute('''
-            INSERT INTO Roles (role_id, role_name)
+            INSERT OR IGNORE INTO Roles (role_id, role_name)
             VALUES (?, ?)
         ''', role_data)
 
     def insert_roles(self, roles_data):
         self.executemany('''
-            INSERT INTO Roles (role_id, role_name)
+            INSERT OR IGNORE INTO Roles (role_id, role_name)
             VALUES (?, ?)
         ''', roles_data)
