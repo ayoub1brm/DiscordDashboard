@@ -1,5 +1,7 @@
 plotly
 streamlit
+streamlit_echarts
+streamlit_extras
 datetime
 pysqlite3-binary
 discord.py
