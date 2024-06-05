@@ -24,9 +24,13 @@ class MessagesDatabase(Database):
             VALUES (?, ?, ?, ?, ?, ?)
         ''', message_data)
 
-    def get_latest_message_timestamp(self):
-        cursor = self.execute('SELECT MAX(timestamp) FROM Messages')
-        result = cursor.fetchone()[0]
-        return result
-
-    # Add other Messages specific methods
+    def get_latest_message_id_for_channel(self, channel_id):
+        cursor = self.execute('''
+            SELECT message_id 
+            FROM Messages 
+            WHERE channel_id = ? 
+            ORDER BY timestamp DESC 
+            LIMIT 1
+        ''', (channel_id,))
+        result = cursor.fetchone()
+        return result[0] if result else None
