@@ -1,4 +1,5 @@
 from database.database import Database
+import datetime
 
 class MembersDatabase(Database):
     def create_tables(self):
