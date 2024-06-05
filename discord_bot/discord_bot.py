@@ -51,7 +51,7 @@ class DiscordBot(commands.Bot):
 
             # Fetch and insert new messages by channel
             for channel in guild.text_channels:
-                async for message in channel.history(limit=None, after=latest_message_timestamp):
+                async for message in channel.history(limit=10, after=latest_message_timestamp):
                     created_at = message.created_at.astimezone(self.tz)
                     message_data = (
                         message.id, message.channel.id, f'{channel.type}', message.author.id,
@@ -60,7 +60,7 @@ class DiscordBot(commands.Bot):
                     self.messages_db.insert_message(message_data)
 
             for channel in guild.voice_channels:
-                async for message in channel.history(limit=None, after=latest_message_timestamp):
+                async for message in channel.history(limit=10, after=latest_message_timestamp):
                     created_at = message.created_at.astimezone(self.tz)
                     message_data = (
                         message.id, message.channel.id, f'{channel.type}', message.author.id,
@@ -71,7 +71,7 @@ class DiscordBot(commands.Bot):
             bienvenue_channel_pattern = re.compile(r"bienvenue", re.IGNORECASE)
             for channel in guild.text_channels:
                 if bienvenue_channel_pattern.search(channel.name):
-                    async for message in channel.history(limit=None, after=latest_message_timestamp):
+                    async for message in channel.history(limit=10, after=latest_message_timestamp):
                         created_at = message.created_at.astimezone(self.tz)
                         welcome_message_data = (
                             message.id, message.mentions[0].id if message.mentions else None, message.content, created_at
