@@ -43,7 +43,7 @@ class DiscordBot(commands.Bot):
             # Insert new members and roles
             for member in guild.members:
                 joined_at = member.joined_at.astimezone(self.tz) if member.joined_at else None
-                if not latest_member_joined_at or (joined_at and joined_at > latest_member_joined_at.astimezone(self.tz)):
+                if not latest_member_joined_at or (joined_at and joined_at > latest_member_joined_at):
                     for role in member.roles:
                         member_data = (
                             member.id, member.name, member.discriminator,
