@@ -1,4 +1,3 @@
-from database.database import Database
 from datetime import datetime, timedelta
 from database_processing.retention_indicator import retention_within_seven_to_fourteen_days
 import pandas as pd
