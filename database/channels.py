@@ -16,7 +16,6 @@ class ChannelsDatabase(Database):
         ''', (channel_id, channel_name))
 
     def get_channels(self):
-        self.connect()
         self.cursor.execute('SELECT channel_id, channel_name FROM Channels')
         result = self.cursor.fetchall()
         self.close()
