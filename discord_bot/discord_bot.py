@@ -174,7 +174,7 @@ def setup_discord_bot(token):
         'messages': MessagesDatabase(db_path),
         'invites': InvitesDatabase(db_path),
         'channels': ChannelsDatabase(db_path),
-        'welcome_messages': WelcomeMessagesDatabase(db_path)
+
     }
     
     for db in dbs.values():
