@@ -35,8 +35,10 @@ class DiscordBot(commands.Bot):
             for role in guild.roles:
                 role_data = (role.id, role.name)
                 self.roles_db.insert_role(role_data)
+                await asyncio.sleep(30)
             for channel in guild.channels:
                 self.channels_db.insert_channel(channel.id, channel.name)
+                await asyncio.sleep(30)
             # Insert new members and roles
             for member in guild.members:
                 joined_at = member.joined_at.astimezone(self.tz) if member.joined_at else None
