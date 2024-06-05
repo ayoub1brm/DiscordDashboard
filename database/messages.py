@@ -2,7 +2,7 @@ from database.database import Database
 
 class MessagesDatabase(Database):
     def create_tables(self):
-        self.cursor.execute('''
+        self.execute('''
             CREATE TABLE IF NOT EXISTS Messages (
                 message_id INTEGER PRIMARY KEY,
                 channel_id INTEGER,
