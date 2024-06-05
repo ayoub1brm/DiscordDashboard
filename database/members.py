@@ -28,17 +28,16 @@ class MembersDatabase(Database):
         ''', (leave_date, member_id))
 
     def get_total_member_count(self):
-        self.execute('''
+        cursor = self.execute('''
             SELECT COUNT(*) FROM (SELECT * FROM Members GROUP BY member_id) WHERE leave_date is NULL AND is_bot = 0
         ''')
-        result = self.cursor.fetchone()[0]
+        result = cursor.fetchone()[0]
         self.close()
         return result
 
     def get_latest_member_joined_at(self):
-        self.execute('SELECT MAX(join_date) FROM Members')
-        result = self.cursor.fetchone()[0]
-        self.close()
+        cursor = self.execute('SELECT MAX(join_date) FROM Members')
+        result = cursor.fetchone()[0]
         return result
 
     # Add other Members specific methods
