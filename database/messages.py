@@ -19,7 +19,7 @@ class MessagesDatabase(Database):
         self.conn.close()
         
     def insert_message(self, message_data):
-        self.cursor.execute('''
+        self.execute('''
             INSERT INTO Messages (message_id, channel_id, channel_type, member_id, message_content, timestamp)
             VALUES (?, ?, ?, ?, ?, ?)
         ''', message_data)
